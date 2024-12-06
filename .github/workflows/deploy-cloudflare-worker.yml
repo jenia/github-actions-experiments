@@ -20,4 +20,4 @@ jobs:
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_API }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-              working-directory: ./workerA
+                  workingDirectory: ./workerA
