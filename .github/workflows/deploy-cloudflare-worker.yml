@@ -1,37 +1,17 @@
-name: Deploy Cloudflare Worker
 
+name: Deploy Worker
 on:
     push:
         branches:
             - main
-            - development # Trigger deployment on changes to the development branch
-
-env:
-    CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-    CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-
 jobs:
     deploy:
-        name: Deploy Cloudflare Worker
         runs-on: ubuntu-latest
-
-        environment: development
-
+        timeout-minutes: 60
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
-
-            - name: Install Wrangler CLI
-              run: npm install -g wrangler
-
-            - name: Authenticate with Cloudflare
-              env:
-                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API }}
-              run: |
-                  echo -n $CLOUDFLARE_API_TOKEN | wrangler config --api-token
-
-            - name: Publish Worker
-              env:
-                  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-              run: |
-                  wrangler publish
+            - uses: actions/checkout@v4
+            - name: Build & Deploy Worker
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
