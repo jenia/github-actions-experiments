@@ -16,4 +16,3 @@ export default {
 		return new Response('Hello World from workerA!');
 	},
 } satisfies ExportedHandler<Env>;
-git 
